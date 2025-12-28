@@ -19,9 +19,10 @@
     "noImplicitAny": true,
     "allowJs": true,
     "jsx": "react-jsx",
+    "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./*"
+      "the-ordinary-unofficial-api": [
+        "./node_modules/the-ordinary-unofficial-api/dist/src/index.d.ts"
       ]
     },
     "allowImportingTsExtensions": true,
