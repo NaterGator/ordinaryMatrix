@@ -1,4 +1,6 @@
-export interface Product {
+export type { Product } from 'the-ordinary-unofficial-api';
+
+export interface LegacyProduct {
   id: string;
   name: string;
   slug: string;

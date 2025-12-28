@@ -22,7 +22,7 @@ export const ProductSelector: React.FC<ProductSelectorProps> = ({
     const lowerTerm = searchTerm.toLowerCase();
     return allProducts.filter(p => 
       !selectedProducts.find(sp => sp.id === p.id) && // Exclude already selected
-      (p.name.toLowerCase().includes(lowerTerm) || p.category?.toLowerCase().includes(lowerTerm))
+      (p.Name.toLowerCase().includes(lowerTerm) || p.Tags.some(t => t.toLowerCase() === lowerTerm))
     ).slice(0, 8); // Limit suggestions
   }, [allProducts, selectedProducts, searchTerm]);
 
@@ -58,8 +58,8 @@ export const ProductSelector: React.FC<ProductSelectorProps> = ({
                   onClick={() => handleSelect(product)}
                 >
                   <div>
-                    <span className="block font-medium text-gray-900">{product.name}</span>
-                    <span className="block text-xs text-gray-500">{product.category}</span>
+                    <span className="block font-medium text-gray-900">{product.Name}</span>
+                    <span className="block text-xs text-gray-500">{product.Tags?.join(', ')}</span>
                   </div>
                   <Plus className="h-4 w-4 text-gray-400 group-hover:text-black" />
                 </div>
@@ -76,13 +76,13 @@ export const ProductSelector: React.FC<ProductSelectorProps> = ({
             key={product.id}
             className="inline-flex items-center px-3 py-1.5 rounded-full text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200"
           >
-            {product.name}
+            {product.Name}
             <button
               type="button"
               className="flex-shrink-0 ml-2 -mr-0.5 h-4 w-4 rounded-full inline-flex items-center justify-center text-gray-400 hover:bg-gray-200 hover:text-gray-500 focus:outline-none"
               onClick={() => onRemove(product.id)}
             >
-              <span className="sr-only">Remove {product.name}</span>
+              <span className="sr-only">Remove {product.Name}</span>
               <X className="h-3 w-3" />
             </button>
           </span>

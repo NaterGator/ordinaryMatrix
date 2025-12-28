@@ -22,15 +22,15 @@ export const checkCompatibility = (products: Product[]): AnalysisResult => {
         if (aExcludesB && bExcludesA) {
           reason = `Both products recommend avoiding the other.`;
         } else if (aExcludesB) {
-          reason = `${pA.name} recommends avoiding products containing ${getConflictTerm(pA, pB)}.`;
+          reason = `${pA.Name} recommends avoiding products containing ${getConflictTerm(pA, pB)}.`;
         } else {
-          reason = `${pB.name} recommends avoiding products containing ${getConflictTerm(pB, pA)}.`;
+          reason = `${pB.Name} recommends avoiding products containing ${getConflictTerm(pB, pA)}.`;
         }
       }
       
       pairs.push({
-        productA: pA.name,
-        productB: pB.name,
+        productA: pA.Name,
+        productB: pB.Name,
         status,
         reason
       });
@@ -57,14 +57,14 @@ export const checkConflict = (pA: Product, pB: Product): boolean => {
 
 // Helper to check if source product excludes target product
 export const isConflict = (source: Product, target: Product): boolean => {
-  if (!source.excludes || source.excludes.length === 0) return false;
+  if (!source.Excludes || source.Excludes.length === 0) return false;
 
-  return source.excludes.some(exclusion => {
+  return source.Excludes.some(exclusion => {
     // 1. Direct Name Match
-    if (exclusion === target.name) return true;
+    if (exclusion === target.Name) return true;
     
     // 2. Tag/Category Match (e.g. source excludes "Direct Acids", target has tag "Direct Acids")
-    if (target.tags && target.tags.includes(exclusion)) return true;
+    if (target.Tags && target.Tags.includes(exclusion)) return true;
 
     // 3. Partial Name Match (Conservative check)
     return false;
@@ -73,8 +73,8 @@ export const isConflict = (source: Product, target: Product): boolean => {
 
 // Helper to get the term that caused the conflict for better messages
 const getConflictTerm = (source: Product, target: Product): string => {
-   const match = source.excludes.find(exclusion => 
-     exclusion === target.name || (target.tags && target.tags.includes(exclusion))
+   const match = source.Excludes.find(exclusion => 
+     exclusion === target.Name || (target.Tags && target.Tags.includes(exclusion))
    );
    return match || "conflicting ingredients";
 };

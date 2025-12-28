@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Product, AnalysisResult, CompatibilityStatus } from '../types';
 import { CheckCircle, AlertTriangle, XCircle, HelpCircle, Info } from 'lucide-react';
 
@@ -16,8 +17,8 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
 
     // Search in pairs for A-B or B-A
     const pair = analysis.pairs.find(
-      p => (p.productA === p1.name && p.productB === p2.name) || 
-           (p.productA === p2.name && p.productB === p1.name)
+      p => (p.productA === p1.Name && p.productB === p2.Name) || 
+           (p.productA === p2.Name && p.productB === p1.Name)
     );
 
     return pair;
@@ -59,7 +60,7 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
               <div className="sticky left-0 z-10 bg-white p-2"></div>
               {products.map((p, i) => (
                 <div key={p.id} className="p-2 text-center text-xs font-medium text-gray-500 rotate-0 md:rotate-0 writing-mode-horizontal flex items-end justify-center break-words">
-                  <span className="w-20 truncate" title={p.name}>{p.name.split(' ').slice(0,2).join(' ')}...</span>
+                  <span className="w-20 truncate" title={p.Name}>{p.Name.split(' ').slice(0,2).join(' ')}...</span>
                 </div>
               ))}
 
@@ -68,8 +69,8 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
                 <React.Fragment key={rowProduct.id}>
                   {/* Row Header */}
                   <div className="sticky left-0 z-10 bg-white p-2 flex items-center justify-end border-r border-gray-100 shadow-[4px_0_8px_-4px_rgba(0,0,0,0.05)]">
-                    <span className="text-xs font-medium text-gray-700 text-right w-24 truncate" title={rowProduct.name}>
-                      {rowProduct.name}
+                    <span className="text-xs font-medium text-gray-700 text-right w-24 truncate" title={rowProduct.Name}>
+                      {rowProduct.Name}
                     </span>
                   </div>
 
@@ -85,7 +86,7 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
                     return (
                       <div 
                         key={`${rowProduct.id}-${colProduct.id}`}
-                        onClick={() => pair && setSelectedCell({ p1: rowProduct.name, p2: colProduct.name, reason: pair.reason, status: pair.status })}
+                        onClick={() => pair && setSelectedCell({ p1: rowProduct.Name, p2: colProduct.Name, reason: pair.reason, status: pair.status })}
                         className={`
                           aspect-square flex items-center justify-center cursor-pointer border border-white transition-colors duration-200
                           ${getStatusColor(status)}
@@ -109,8 +110,8 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
       </div>
 
       {/* Detail Modal/Card */}
-      {selectedCell && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm" onClick={() => setSelectedCell(null)}>
+      {selectedCell && createPortal(
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/20 backdrop-blur-sm" onClick={() => setSelectedCell(null)}>
           <div className="bg-white rounded-xl shadow-xl max-w-md w-full p-6 animate-scale-in" onClick={e => e.stopPropagation()}>
             <div className="flex justify-between items-start mb-4">
               <h4 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
@@ -126,7 +127,7 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
                <div className="text-gray-400 font-bold">+</div>
                <div className="flex-1 text-sm font-medium text-center">{selectedCell.p2}</div>
             </div>
-
+ 
             <div className={`mb-4 inline-flex items-center px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide
               ${selectedCell.status === 'COMPATIBLE' ? 'bg-green-100 text-green-800' : ''}
               ${selectedCell.status === 'CONFLICT' ? 'bg-red-100 text-red-800' : ''}
@@ -145,7 +146,7 @@ export const MatrixGrid: React.FC<MatrixGridProps> = ({ products, analysis }) =>
             </button>
           </div>
         </div>
-      )}
+      , document.body)}
     </div>
   );
 };

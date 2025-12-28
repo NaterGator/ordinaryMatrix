@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Product } from '../types';
+import type { Product } from '../types';
 import { checkConflict } from '../services/compatibilityService';
 import { Sun, Moon, Info, Check } from 'lucide-react';
 
@@ -47,13 +47,13 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({ products }) => {
 
       <div className="overflow-hidden rounded-lg border border-gray-100">
         <table className="w-full">
-          <thead>
+          <thead>components/RoutineBuilder.tsx
             <tr className="bg-gray-50 border-b border-gray-200">
               <th className="text-left py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider w-1/2">Product</th>
               <th className="text-center py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider w-1/4">
                 <div className="flex items-center justify-center gap-1">
                   <Sun className="w-4 h-4" /> AM
-                </div>
+                </div>components/RoutineBuilder.tsx
               </th>
               <th className="text-center py-3 px-4 text-xs font-semibold text-gray-500 uppercase tracking-wider w-1/4">
                 <div className="flex items-center justify-center gap-1">
@@ -77,8 +77,8 @@ export const RoutineBuilder: React.FC<RoutineBuilderProps> = ({ products }) => {
               return (
                 <tr key={product.id} className="hover:bg-gray-50/50 transition-colors">
                   <td className="py-3 px-4">
-                    <div className="font-medium text-gray-900">{product.name}</div>
-                    <div className="text-xs text-gray-400">{product.category}</div>
+                    <div className="font-medium text-gray-900">{product.Name}</div>
+                    <div className="text-xs text-gray-400">{product.Tags?.join(', ')}</div>
                   </td>
                   
                   {/* AM Toggle */}
@@ -150,7 +150,7 @@ const RoutineToggle: React.FC<{
           <div className="font-semibold mb-1">Incompatible with:</div>
           <ul className="list-disc list-inside text-gray-300">
             {conflicts.map(c => (
-              <li key={c.id} className="truncate">{c.name}</li>
+              <li key={c.id} className="truncate">{c.Name}</li>
             ))}
           </ul>
         </div>
@@ -164,7 +164,7 @@ const RoutineSummary: React.FC<{ title: string; items: Product[]; icon: React.Re
     <div className="flex items-center gap-2 mb-3 border-b border-gray-200 pb-2">
       {icon}
       <h4 className="font-semibold text-gray-900 text-sm">{title}</h4>
-      <span className="ml-auto text-xs text-gray-500 font-medium">{items.length} steps</span>
+      <span className="ml-auto text-xs text-gray-500 font-medium">{items.length} products</span>
     </div>
     {items.length === 0 ? (
       <div className="text-gray-400 text-xs italic py-2">No products assigned</div>
@@ -172,8 +172,8 @@ const RoutineSummary: React.FC<{ title: string; items: Product[]; icon: React.Re
       <ul className="space-y-2">
         {items.map((p, idx) => (
           <li key={p.id} className="text-sm text-gray-700 flex items-start gap-2">
-            <span className="text-gray-300 font-mono text-xs mt-0.5">{idx + 1}</span>
-            <span className="truncate">{p.name}</span>
+            <span className="text-gray-300 font-mono text-xs mt-0.5">&#x2022;</span>
+            <span className="truncate">{p.Name}</span>
           </li>
         ))}
       </ul>
